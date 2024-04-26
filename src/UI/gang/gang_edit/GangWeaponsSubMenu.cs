@@ -40,7 +40,6 @@ namespace GTA.GangAndTurfMod
                             MindControl.AddOrSubtractMoneyToProtagonist(kvp.Key.price);
                             GangManager.instance.SaveGangData();
                             UI.Screen.ShowSubtitle(Localization.GetTextByKey("subtitle_gang_weapon_removed", "Weapon Removed!"));
-                            pickedItem.Checked = false;
                         }
                         else
                         {
@@ -49,12 +48,10 @@ namespace GTA.GangAndTurfMod
                                 playerGang.gangWeaponHashes.Add(kvp.Key.wepHash);
                                 GangManager.instance.SaveGangData();
                                 UI.Screen.ShowSubtitle(Localization.GetTextByKey("subtitle_gang_weapon_bought", "Weapon Bought!"));
-                                pickedItem.Checked = true;
                             }
                             else
                             {
                                 UI.Screen.ShowSubtitle(Localization.GetTextByKey("subtitle_not_enough_money_to_buy_gang_weapon", "You don't have enough money to buy that weapon for your gang."));
-                                pickedItem.Checked = false;
                             }
                         }
 
