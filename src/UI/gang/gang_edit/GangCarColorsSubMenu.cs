@@ -24,6 +24,7 @@ namespace GTA.GangAndTurfMod
         private readonly NativeMenu colorsMenu;
         private bool settingPrimaryColor = true;
         private readonly List<VehicleColor> vehicleColors = new List<VehicleColor>();
+        private int curItemIndex = 0;
 
         protected override void Setup()
         {
@@ -36,17 +37,17 @@ namespace GTA.GangAndTurfMod
 
             colorsMenu.SelectedIndexChanged += (sender, args) =>
             {
-                int newIndex = args.Index;
+                curItemIndex = args.Index;
                 Vehicle playerVehicle = MindControl.CurrentPlayerCharacter.CurrentVehicle;
                 if (playerVehicle != null)
                 {
                     if (settingPrimaryColor)
                     {
-                        playerVehicle.Mods.PrimaryColor = vehicleColors[newIndex];
+                        playerVehicle.Mods.PrimaryColor = vehicleColors[curItemIndex];
                     }
                     else
                     {
-                        playerVehicle.Mods.SecondaryColor = vehicleColors[newIndex];
+                        playerVehicle.Mods.SecondaryColor = vehicleColors[curItemIndex];
                     }
                 }
             };
@@ -57,11 +58,11 @@ namespace GTA.GangAndTurfMod
 
                 if (settingPrimaryColor)
                 {
-                    playerGang.vehicleColor = vehicleColors[SelectedIndex];
+                    playerGang.vehicleColor = vehicleColors[curItemIndex];
                 }
                 else
                 {
-                    playerGang.secondaryVehicleColor = vehicleColors[SelectedIndex];
+                    playerGang.secondaryVehicleColor = vehicleColors[curItemIndex];
                 }
 
                 GangManager.instance.SaveGangData(false);
