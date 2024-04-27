@@ -108,6 +108,10 @@
 			<Value>Car told to back you up!</Value>
 		</LocaleKey>
 		<LocaleKey>
+			<Key>subtitle_car_told_to_backup</Key>
+			<Value>Vehicle told to back you up!</Value>
+		</LocaleKey>
+		<LocaleKey>
 			<Key>subtitle_member_joined_your_group</Key>
 			<Value>A member has joined your group</Value>
 		</LocaleKey>

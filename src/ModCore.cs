@@ -235,7 +235,7 @@ namespace GTA.GangAndTurfMod
                                 playerGangDrivers[i].deliveringCar = true;
                                 playerGangDrivers[i].destination = Math.Vector3.WorldEast; //just something that isn't zero will do to wake the driver up
                                 playerGangDrivers[i].Update();
-                                UI.Notification.Show(Localization.GetTextByKey("notify_car_told_to_backup", "Car told to back you up!"));
+                                UI.Screen.ShowSubtitle(Localization.GetTextByKey("subtitle_car_told_to_backup", "Vehicle told to back you up!"));
                                 return;
                             }
                         }
