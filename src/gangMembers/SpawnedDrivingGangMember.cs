@@ -6,10 +6,17 @@ namespace GTA.GangAndTurfMod
 {
     public enum VehicleType
     {
-        car,
-        heli,
-        plane,
-        unsupported
+        /// <summary>
+        /// anything that should work on land and isn't a bike should fall in this category
+        /// </summary>
+        car = 0,
+        heli = 1,
+        plane = 2,
+        /// <summary>
+        /// quadbikes, motorcycles, bicycles...
+        /// </summary>
+        bike = 3,
+        unsupported = -1
     }
     public class SpawnedDrivingGangMember : UpdatedClass
     {
@@ -67,7 +74,7 @@ namespace GTA.GangAndTurfMod
 
             if (vehicleIAmDriving.IsAlive && watchedPed.IsAlive)
             {
-                if (deliveringCar || vehicleType != VehicleType.car)
+                if (deliveringCar || (vehicleType != VehicleType.car && vehicleType != VehicleType.bike))
                 {
                     //since we want this vehicle to arrive (and/or not crash),
                     //our driver shouldn't get distracted with fights and stuff
@@ -184,7 +191,7 @@ namespace GTA.GangAndTurfMod
                 {
                     if (deliveringCar)
                     {
-                        if(vehicleType == VehicleType.car)
+                        if(vehicleType == VehicleType.car || vehicleType == VehicleType.bike)
                         {
                             DriverLeaveVehicle();
                         } 
@@ -215,43 +222,53 @@ namespace GTA.GangAndTurfMod
                         }
                         else
                         {
-                            //stay around and keep dropping off passengers for a while
-                            DropOffPassengers();
-
-                            destination = Vector3.Zero;
-
-                            updatesWhileDroppingPassengers++;
-
-                            if (vehicleType == VehicleType.heli)
+                            if(vehicleType == VehicleType.bike)
                             {
-                                // land heli if unarmed, keep attacking if armed
-                                // if our heli doesn't have guns, land on destination
-                                if (vehicleHasGuns)
+                                // bikes should not act as spawn points
+                                DriverLeaveVehicle();
+                            }
+                            else
+                            {
+                                //stay around and keep dropping off passengers for a while
+                                DropOffPassengers();
+
+                                destination = Vector3.Zero;
+
+                                updatesWhileDroppingPassengers++;
+
+                                if (vehicleType == VehicleType.heli)
                                 {
-                                    var randomEnemy = SpawnManager.instance.GetFirstMemberNotFromMyGang(myGang, true);
-                                    if(randomEnemy != null)
+                                    // land heli if unarmed, keep attacking if armed
+                                    // if our heli doesn't have guns, land on destination
+                                    if (vehicleHasGuns)
                                     {
-                                        watchedPed.Task.StartHeliMission(vehicleIAmDriving, randomEnemy, VehicleMissionType.Attack, MAX_SPEED, 100.0f, 30, 20);
+                                        var randomEnemy = SpawnManager.instance.GetFirstMemberNotFromMyGang(myGang, true);
+                                        if (randomEnemy != null)
+                                        {
+                                            watchedPed.Task.StartHeliMission(vehicleIAmDriving, randomEnemy, VehicleMissionType.Attack, MAX_SPEED, 100.0f, 30, 20);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        watchedPed.Task.StartHeliMission(vehicleIAmDriving, destination, VehicleMissionType.LandAndWait, 5.0f, 100.0f, 0, 0, -1, 300, HeliMissionFlags.LandOnArrival);
                                     }
                                 }
-                                else
+                                else if (vehicleType == VehicleType.plane)
                                 {
-                                    watchedPed.Task.StartHeliMission(vehicleIAmDriving, destination, VehicleMissionType.LandAndWait, 5.0f, 100.0f, 0, 0, -1, 300, HeliMissionFlags.LandOnArrival);
+                                    var randomEnemy = SpawnManager.instance.GetFirstMemberNotFromMyGang(myGang, true);
+                                    if (randomEnemy != null)
+                                    {
+                                        watchedPed.Task.StartPlaneMission(vehicleIAmDriving, randomEnemy, VehicleMissionType.Attack, MAX_SPEED, 200.0f, 60, 60);
+                                    }
                                 }
-                            }
-                            else if(vehicleType == VehicleType.plane)
-                            {
-                                var randomEnemy = SpawnManager.instance.GetFirstMemberNotFromMyGang(myGang, true);
-                                if (randomEnemy != null)
+
+                                if (updatesWhileDroppingPassengers > ModOptions.instance.driverUpdateLimitWhileDroppingOffPassengers)
                                 {
-                                    watchedPed.Task.StartPlaneMission(vehicleIAmDriving, randomEnemy, VehicleMissionType.Attack, MAX_SPEED, 200.0f, 60, 60);
+                                    ClearAllRefs(true);
                                 }
                             }
 
-                            if (updatesWhileDroppingPassengers > ModOptions.instance.driverUpdateLimitWhileDroppingOffPassengers)
-                            {
-                                ClearAllRefs(true);
-                            }
+                            
                         }
                     }
                 }
@@ -575,7 +592,11 @@ namespace GTA.GangAndTurfMod
 
             //UI.Screen.ShowSubtitle(vehicleIAmDriving.FriendlyName + " has " + myPassengers.Count + " passengers", 800);
 
-            if (vehicleIAmDriving.IsHelicopter)
+            if(vehicleIAmDriving.IsBike || vehicleIAmDriving.IsBicycle || vehicleIAmDriving.IsMotorcycle || vehicleIAmDriving.IsQuadBike)
+            {
+                vehicleType = VehicleType.bike;
+            }
+            else if (vehicleIAmDriving.IsHelicopter)
             {
                 vehicleType = VehicleType.heli;
             }else if(vehicleIAmDriving.IsPlane)
