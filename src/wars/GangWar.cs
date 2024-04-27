@@ -642,6 +642,7 @@ namespace GTA.GangAndTurfMod
         {
             foreach (WarControlPoint cp in controlPoints)
             {
+                cp.CreateAttachedBlip();
                 cp.UpdateBlipAppearance();
             }
         }
@@ -1142,6 +1143,15 @@ namespace GTA.GangAndTurfMod
             {
                 defenderReinforcements += spawnedDefenders;
                 attackerReinforcements += spawnedAttackers;
+            }
+
+            if (warAreaBlips[1] == null)
+            {
+                warAreaBlips[1] = World.CreateBlip(MindControl.SafePositionNearPlayer,
+                ModOptions.instance.maxDistToWarBlipBeforePlayerLeavesWar);
+                warAreaBlips[1].Sprite = BlipSprite.BigCircle;
+                warAreaBlips[1].Color = BlipColor.Red;
+                warAreaBlips[1].Alpha = 175;
             }
         }
 
