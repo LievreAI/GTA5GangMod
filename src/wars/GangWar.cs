@@ -1329,14 +1329,8 @@ namespace GTA.GangAndTurfMod
                 playerNearWarzone = false;
                 if (ModCore.curGameTime - msTimeOfLastAutoResolveStep > ModOptions.instance.msTimeBetweenWarAutoResolveSteps)
                 {
-                    RunAutoResolveStep(1.15f);
+                    RunAutoResolveStep(1.05f);
                 }
-            }
-            //if the player's gang leader is dead...
-            if (!Game.Player.IsAlive && !MindControl.HasChangedBody)
-            {
-                RunAutoResolveStep(1.05f);
-                return;
             }
         }
 
