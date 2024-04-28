@@ -341,12 +341,14 @@ namespace GTA.GangAndTurfMod
                 //get the first war in the "wars nearby" list...
                 //unless there is another one in which the player gang is involved
                 focusedWar = warsNearPlayer[0];
+                bool playerGangInvolved = false;
 
-                foreach(GangWar war in warsNearPlayer)
+                foreach (GangWar war in warsNearPlayer)
                 {
                     if (war.IsPlayerGangInvolved())
                     {
                         focusedWar = war;
+                        playerGangInvolved = true;
                         break;
                     }
                 }
@@ -358,9 +360,18 @@ namespace GTA.GangAndTurfMod
                     AmbientGangMemberSpawner.instance.enabled = false;
                 }
 
-                if (focusedWar.IsPlayerGangInvolved() || ModOptions.instance.showReinforcementCountsForAIWars)
+                if (playerGangInvolved || ModOptions.instance.showReinforcementCountsForAIWars)
                 {
                     shouldDisplayReinforcementsTexts = true;
+                    if (playerGangInvolved)
+                    {
+                        alliedNumText.Color = Color.CadetBlue;
+                    }
+                    else
+                    {
+                        alliedNumText.Color = Color.PaleVioletRed;
+                    }
+
                     if (focusedWar.attackingGang.isPlayerOwned)
                     {
                         UpdateReinforcementsTexts(focusedWar.attackerReinforcements, focusedWar.defenderReinforcements);
