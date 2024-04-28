@@ -1019,8 +1019,8 @@ namespace GTA.GangAndTurfMod
                 if (member.watchedPed == null) continue;
                 //don't attempt to cull a friendly driving member because they could be a backup car called by the player...
                 //and the player can probably take more advantage of any stuck friendly vehicle than the AI can
-                if ((!member.myGang.isPlayerOwned || !Function.Call<bool>(Hash.IS_PED_IN_ANY_VEHICLE, member.watchedPed, false)) &&
-                    !member.watchedPed.IsOnScreen)
+                if ((!member.myGang.isPlayerOwned || !Function.Call<bool>(Hash.IS_PED_IN_ANY_VEHICLE, member.watchedPed, false)) && 
+                    !member.watchedPed.IsInGroup && !member.watchedPed.IsOnScreen)
                 {
                     //ok, it's fine to cull this member...
                     //but is it necessary right now?
