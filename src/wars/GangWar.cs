@@ -59,6 +59,9 @@ namespace GTA.GangAndTurfMod
 
         private GangWarManager.AttackStrength curWarAtkStrength = GangWarManager.AttackStrength.light;
 
+        /// <summary>
+        /// control points used in this war. Can be an empty list, but not a null one
+        /// </summary>
         public List<WarControlPoint> controlPoints = new List<WarControlPoint>();
 
         private List<Vector3> availableNearbyPresetSpawns;
@@ -1276,15 +1279,18 @@ namespace GTA.GangAndTurfMod
                         {
                             msTimeOfLastNoSpawnsPunishment = curTime;
 
-                            //decrement reinforcements of any side with no spawn points!
-                            if(attackerSpawnPoints.Count == 0)
+                            if(ModOptions.instance.warPunishForNoSpawnsEvenIfNoSpawnsAvailable || controlPoints.Count > 0)
                             {
-                                DecrementAttackerReinforcements();
-                            }
+                                //decrement reinforcements of any side with no spawn points!
+                                if (attackerSpawnPoints.Count == 0)
+                                {
+                                    DecrementAttackerReinforcements();
+                                }
 
-                            if(defenderSpawnPoints.Count == 0)
-                            {
-                                DecrementDefenderReinforcements();
+                                if (defenderSpawnPoints.Count == 0)
+                                {
+                                    DecrementDefenderReinforcements();
+                                }
                             }
                         }
                     }

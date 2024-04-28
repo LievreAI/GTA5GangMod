@@ -106,6 +106,7 @@ namespace GTA.GangAndTurfMod
         public bool lockCurWarReinforcementCount = false;
         public int maxDistToWarBlipBeforePlayerLeavesWar = 300;
         public int msTimeBetweenWarAutoResolveSteps = 25000;
+        public bool warPunishForNoSpawnsEvenIfNoSpawnsAvailable = false;
         public int msTimeBetweenWarPunishingForNoSpawns = 1500;
         public int msTimeBeforeEnemySpawnsCanBeCaptured = 12000;
         public float distanceToCaptureWarControlPoint = 5.0f;
