@@ -200,7 +200,7 @@ namespace GTA.GangAndTurfMod
                 Ped aimedGangMember = null;
                 for (int i = 0; i < playerGangMembers.Count; i++)
                 {
-                    if (Game.Player.IsTargetting(playerGangMembers[i]) && playerGangMembers[i] != theOriginalPed)
+                    if (Game.Player.IsTargeting(playerGangMembers[i]) && playerGangMembers[i] != theOriginalPed)
                     {
                         aimedGangMember = playerGangMembers[i];
                         break;
@@ -240,7 +240,7 @@ namespace GTA.GangAndTurfMod
             if (lastControlledPed != null && lastControlledPed.Exists())
             {
                 lastControlledPed.Health = lastControlledPed.Armor + 100;
-                lastControlledPed.RelationshipGroup = GangManager.instance.PlayerGang.relationGroupIndex;
+                lastControlledPed.RelationshipGroup = GangManager.instance.PlayerGang.relGroup;
                 lastControlledPed.Task.ClearAllImmediately();
             }
 
@@ -306,7 +306,7 @@ namespace GTA.GangAndTurfMod
             if (lastControlledPed != null && lastControlledPed.Exists())
             {
                 lastControlledPed.Health = lastControlledPed.Armor + 100;
-                lastControlledPed.RelationshipGroup = GangManager.instance.PlayerGang.relationGroupIndex;
+                lastControlledPed.RelationshipGroup = GangManager.instance.PlayerGang.relGroup;
                 lastControlledPed.Task.ClearAllImmediately();
             }
 
