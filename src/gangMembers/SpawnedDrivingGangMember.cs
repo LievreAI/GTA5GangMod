@@ -472,6 +472,12 @@ namespace GTA.GangAndTurfMod
         {
             bool shouldParachute = ((vehicleType == VehicleType.heli || vehicleType == VehicleType.plane) && !vehicleIAmDriving.IsOnAllWheels) ||
                 vehicleIAmDriving.HeightAboveGround > 15.0f;
+            // cancel dropping off if we should parachute but parachuting is disabled
+            if(shouldParachute && !ModOptions.instance.gangMembersCanParachuteFromFlyingVehicles)
+            {
+                return;
+            }
+
             int numParachuting = 0;
             for (int i = myPassengers.Count - 1; i >= 0; i--)
             {

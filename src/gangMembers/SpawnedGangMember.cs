@@ -225,7 +225,7 @@ namespace GTA.GangAndTurfMod
                         //if we were a driving member, we must be allowed to "be distracted" again
                         watchedPed.BlockPermanentEvents = false;
 
-                        if (curVehicle.IsSeatFree(VehicleSeat.Driver))
+                        if (curVehicle.IsSeatFree(VehicleSeat.Driver) || (curVehicle.Driver.Exists() && !curVehicle.Driver.IsAlive))
                         {
                             //possibly leave the vehicle if the driver has left already
                             if (!watchedPed.IsUsingAnyVehicleWeapon())
@@ -271,9 +271,10 @@ namespace GTA.GangAndTurfMod
                                 {
                                     Function.Call(Hash.SET_PED_COMBAT_ATTRIBUTES, watchedPed, 3, true); // BF_CanLeaveVehicle  
 
-                                    if (curVehicle.IsHelicopter || curVehicle.IsPlane)
+                                    if ((curVehicle.IsHelicopter || curVehicle.IsPlane) && !curVehicle.IsOnAllWheels)
                                     {
-                                        if(watchedPed.SeatIndex != VehicleSeat.Driver)
+                                        if(ModOptions.instance.gangMembersCanParachuteFromFlyingVehicles &&
+                                            watchedPed.SeatIndex != VehicleSeat.Driver)
                                         {
                                             StartParachuting(MindControl.SafePositionNearPlayer);
                                         }
