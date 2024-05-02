@@ -364,12 +364,26 @@ namespace GTA.GangAndTurfMod
 
             for (int i = 0; i < memberAIs.Count; i++)
             {
-                if (memberAIs[i].watchedPed != null)
+                var memberPed = memberAIs[i].watchedPed;
+                if (memberPed != null)
                 {
-                    if ((!mustBeAlive || memberAIs[i].watchedPed.IsAlive) &&
-                        memberAIs[i].watchedPed.RelationshipGroup != myGang.relGroup)
+                    if((!mustBeAlive || memberPed.IsAlive))
                     {
-                        return memberAIs[i].watchedPed;
+                        if(MindControl.CurrentPlayerCharacter == memberPed)
+                        {
+                            if ((!mustBeAlive || !MindControl.hasDiedWithChangedBody)
+                                && !myGang.isPlayerOwned)
+                            {
+                                return memberPed;
+                            }
+                        }
+                        else
+                        {
+                            if (memberPed.RelationshipGroup != myGang.relGroup)
+                            {
+                                return memberPed;
+                            }
+                        }
                     }
                 }
             }
