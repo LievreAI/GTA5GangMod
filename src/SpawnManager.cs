@@ -623,23 +623,26 @@ namespace GTA.GangAndTurfMod
 
                     bool hasDriveByGun = false; //used for when the member has to decide between staying inside a vehicle or not
 
-                    //give a weapon
-                    if (ownerGang.gangWeaponHashes.Count > 0)
+                    if (newPed.IsHuman)
                     {
-                        //get one weap from each type... if possible AND we're not forcing melee only
-                        newPed.Weapons.Give(ownerGang.GetListedGunFromOwnedGuns(ModOptions.instance.meleeWeapons), 1000, spawnWithWeaponEquipped, true);
-                        if (!ModOptions.instance.membersSpawnWithMeleeOnly)
+                        //give a weapon
+                        if (ownerGang.gangWeaponHashes.Count > 0)
                         {
-                            WeaponHash driveByGun = ownerGang.GetListedGunFromOwnedGuns(ModOptions.instance.driveByWeapons);
-                            hasDriveByGun = driveByGun != WeaponHash.Unarmed;
-                            newPed.Weapons.Give(driveByGun, 1000, false, true);
-                            newPed.Weapons.Give(ownerGang.GetListedGunFromOwnedGuns(ModOptions.instance.primaryWeapons), 1000, spawnWithWeaponEquipped, true);
+                            //get one weap from each type... if possible AND we're not forcing melee only
+                            newPed.Weapons.Give(ownerGang.GetListedGunFromOwnedGuns(ModOptions.instance.meleeWeapons), 1000, spawnWithWeaponEquipped, true);
+                            if (!ModOptions.instance.membersSpawnWithMeleeOnly)
+                            {
+                                WeaponHash driveByGun = ownerGang.GetListedGunFromOwnedGuns(ModOptions.instance.driveByWeapons);
+                                hasDriveByGun = driveByGun != WeaponHash.Unarmed;
+                                newPed.Weapons.Give(driveByGun, 1000, false, true);
+                                newPed.Weapons.Give(ownerGang.GetListedGunFromOwnedGuns(ModOptions.instance.primaryWeapons), 1000, spawnWithWeaponEquipped, true);
 
-                            //and one extra
-                            newPed.Weapons.Give(RandoMath.RandomElement(ownerGang.gangWeaponHashes), 1000, false, true);
+                                //and one extra
+                                newPed.Weapons.Give(RandoMath.RandomElement(ownerGang.gangWeaponHashes), 1000, false, true);
+                            }
                         }
                     }
-
+                    
                     //set the relationship group
                     newPed.RelationshipGroup = ownerGang.relGroup;
 
